@@ -1,0 +1,13 @@
+name: Hello World
+
+# git push
+on: push
+
+# after pushing what wil run
+jobs:
+    hello:
+# on which system to run it on
+        runs-on:ubuntu-latest
+
+        steps:
+          - run: echo "Hello world from github actions"
