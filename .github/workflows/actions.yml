@@ -1,4 +1,4 @@
-name: Hello World
+name: Environment Information
 
 # git push
 on: push
@@ -11,3 +11,8 @@ jobs:
 
         steps:
           - run: echo "Hello world from github actions"
+          - run: echo "Operating System ${{ runner.os }}"
+          - run: echo "Runner Name ${{ runner.name }}"
+          - run: echo "Runner Architecture ${{ runner.arch }}"
+          - run: echo "Runner Temporary Directory ${{ runner.temp }}"
+          - run: echo "Current repository ${{ github.repository }}"
