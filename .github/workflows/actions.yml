@@ -1,18 +1,31 @@
-name: Environment Information
+# name: Environment Information
 
-# git push
+# # git push
+# on: push
+
+# # after pushing what wil run
+# jobs:
+#     hello:
+# # on which system to run it on
+#         runs-on: ubuntu-latest
+
+#         steps:
+#           - run: echo "Hello world from github actions"
+#           - run: echo "Operating System ${{ runner.os }}"
+#           - run: echo "Runner Name ${{ runner.name }}"
+#           - run: echo "Runner Architecture ${{ runner.arch }}"
+#           - run: echo "Runner Temporary Directory ${{ runner.temp }}"
+#           - run: echo "Current repository ${{ github.repository }}"
+
+
+name: Calculator Tests
+
 on: push
 
-# after pushing what wil run
 jobs:
-    hello:
-# on which system to run it on
+    test:
         runs-on: ubuntu-latest
 
         steps:
-          - run: echo "Hello world from github actions"
-          - run: echo "Operating System ${{ runner.os }}"
-          - run: echo "Runner Name ${{ runner.name }}"
-          - run: echo "Runner Architecture ${{ runner.arch }}"
-          - run: echo "Runner Temporary Directory ${{ runner.temp }}"
-          - run: echo "Current repository ${{ github.repository }}"
+             - uses: actions/checkout@v4
+             - run: node src/calculator.test.js
