@@ -27,17 +27,36 @@
 #                 - run: echo "Deploying the application..."
 
 
-name: Handle Issues
+# name: Handle Issues
 
-on:
-    issues:
-        types: [opened, edited]
+# on:
+#     issues:
+#         types: [opened, edited]
+# jobs:
+#     log-issue:
+#         runs-on: ubuntu-latest
+#         steps:
+#             - name: Log Issue Details
+#               run: |
+#                   echo "Issue Title: ${{ github.event.issue.title }}"
+#                   echo "Issue Body: ${{ github.event.issue.body }}"
+#                   echo "${{ toJSON(github.event) }}"
+
+# Question1
+
+name: Print Dynamical Message
+
+on :
+    push:
+        branches:
+            - main
 jobs:
-    log-issue:
-        runs-on: ubuntu-latest
-        steps:
-            - name: Log Issue Details
-              run: |
-                  echo "Issue Title: ${{ github.event.issue.title }}"
-                  echo "Issue Body: ${{ github.event.issue.body }}"
-                  echo "${{ toJSON(github.event) }}"
+  greet:
+    runs-on: ubuntu-latest
+    steps:
+        - name: Print message
+          run:
+               echo "Hello, ${{github.actor}}!! Welcome to the GitHub Actions workflow."
+               echo "You pushed to the branch ${{github.ref}}"
+               echo "from repository ${{github.repository}}"
+               echo "at $(TZ='Asia/Kolkata' date '+%Y-%m-%d %H:%M IST')"
