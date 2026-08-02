@@ -82,4 +82,4 @@ jobs:
                 echo "Branch ${{github.ref}}"
                 echo "Triggered by ${{github.actor}}"
                 echo "Event Type ${{github.event_name}}"
-                echo "Timestamp $((TZ='Asia/Kolkata' date '+%Y-%m-%d %H:%M IST'))"
+                echo "Timestamp $(TZ='Asia/Kolkata' date '+%Y-%m-%d %H:%M IST')"
