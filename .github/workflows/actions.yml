@@ -63,23 +63,80 @@
 
 
 
-# Question 2
+# # Question 2
 
-name :  DEPLOYMENT RECEIPT
+# name :  DEPLOYMENT RECEIPT
 
-on :
-   push:
-      branches:
-            - main
+# on :
+#    push:
+#       branches:
+#             - main
+# jobs:
+#    recipt:
+#       runs-on: ubuntu-latest
+#       steps:
+#             - name: Print Deployment Receipt
+#               run:
+#                 echo "Deployment Receipt"
+#                 echo "Repository ${{github.repository}}"
+#                 echo "Branch ${{github.ref}}"
+#                 echo "Triggered by ${{github.actor}}"
+#                 echo "Event Type ${{github.event_name}}"
+#                 echo "Timestamp $(TZ='Asia/Kolkata' date '+%Y-%m-%d %H:%M IST')"
+
+name: SERVER HEALTH REPORT
+
+on:
+  push:
+    branches:
+      - main
+
 jobs:
-   recipt:
-      runs-on: ubuntu-latest
-      steps:
-            - name: Print Deployment Receipt
-              run:
-                echo "Deployment Receipt"
-                echo "Repository ${{github.repository}}"
-                echo "Branch ${{github.ref}}"
-                echo "Triggered by ${{github.actor}}"
-                echo "Event Type ${{github.event_name}}"
-                echo "Timestamp $(TZ='Asia/Kolkata' date '+%Y-%m-%d %H:%M IST')"
+  health:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Print Server Health Report
+        run: |
+          node -e "
+            const os = require('os');
+            const { execSync } = require('child_process');
+
+            const diskUsage = execSync(\"df -h / | tail -1 | awk '{print \\\$5}'\").toString().trim();
+            const memAvailable = (os.freemem() / 1024 ** 3).toFixed(0) + ' GB';
+            const cpuCores = os.cpus().length;
+            const nodeVersion = process.version;
+            const pythonVersion = execSync('python3 --version').toString().trim().replace('Python ', '');
+
+            const diskNum = parseInt(diskUsage, 10);
+            const status = diskNum < 80 ? '✅ HEALTHY' : '❌ CRITICAL';
+
+            console.log('📊 SERVER HEALTH REPORT');
+            console.log('');
+            console.log('Disk Usage:');
+            console.log(diskUsage);
+            console.log('');
+            console.log('Memory Available:');
+            console.log(memAvailable);
+            console.log('');
+            console.log('CPU Cores:');
+            console.log(cpuCores);
+            console.log('');
+            console.log('Node Version:');
+            console.log(nodeVersion);
+            console.log('');
+            console.log('Python Version:');
+            console.log(pythonVersion);
+            console.log('');
+            console.log('Health Status:');
+            console.log(status);
+          "
